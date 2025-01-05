@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextDatabase xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="texts.xsd" Version="4.24.1">
+  <Languages>
+    <Language Id="GB" />
+  </Languages>
+  <Texts>
+    <TextGroup Id="Group1" />
+    <TextGroup Id="Unsorted">
+      <Text Id="__SingleUse_WOKT" Alignment="Left" TypographyId="Default">
+        <Translation Language="GB">18:22:30</Translation>
+      </Text>
+      <Text Id="__SingleUse_LDT9" Alignment="Left" TypographyId="Default">
+        <Translation Language="GB">&lt;value&gt;</Translation>
+      </Text>
+      <Text Id="__SingleUse_MRSL" Alignment="Left" TypographyId="Large">
+        <Translation Language="GB">100</Translation>
+      </Text>
+      <Text Id="__SingleUse_1BAY" Alignment="Left" TypographyId="Large">
+        <Translation Language="GB">99</Translation>
+      </Text>
+      <Text Id="__SingleUse_V8U4" Alignment="Left" TypographyId="Default">
+        <Translation Language="GB">Setting :</Translation>
+      </Text>
+      <Text Id="__SingleUse_UCE8" Alignment="Right" TypographyId="Typography_01">
+        <Translation Language="GB">&lt;value&gt;</Translation>
+      </Text>
+      <Text Id="__SingleUse_R23E" Alignment="Left" TypographyId="Large">
+        <Translation Language="GB">999</Translation>
+      </Text>
+      <Text Id="LUX_TEXT" Alignment="Left" TypographyId="Typography_01">
+        <Translation Language="GB">50</Translation>
+      </Text>
+      <Text Id="__SingleUse_RWZE" Alignment="Right" TypographyId="Typography_01">
+        <Translation Language="GB">&lt;value&gt;</Translation>
+      </Text>
+      <Text Id="__SingleUse_FBV3" Alignment="Right" TypographyId="Default">
+        <Translation Language="GB">&lt;value&gt;</Translation>
+      </Text>
+      <Text Id="__SingleUse_60SS" Alignment="Left" TypographyId="Default">
+        <Translation Language="GB">Fan :</Translation>
+      </Text>
+      <Text Id="__SingleUse_W8LO" Alignment="Left" TypographyId="Default">
+        <Translation Language="GB">Temp:</Translation>
+      </Text>
+      <Text Id="__SingleUse_FDT9" Alignment="Left" TypographyId="Default">
+        <Translation Language="GB">ON</Translation>
+      </Text>
+      <Text Id="__SingleUse_ZEAQ" Alignment="Left" TypographyId="Default">
+        <Translation Language="GB">OFF</Translation>
+      </Text>
+      <Text Id="__SingleUse_MVXD" Alignment="Right" TypographyId="Default">
+        <Translation Language="GB">&lt;value&gt;</Translation>
+      </Text>
+      <Text Id="__SingleUse_N37S" Alignment="Left" TypographyId="Default">
+        <Translation Language="GB">Lux :</Translation>
+      </Text>
+      <Text Id="__SingleUse_5DGI" Alignment="Left" TypographyId="Default">
+        <Translation Language="GB">OFF</Translation>
+      </Text>
+      <Text Id="__SingleUse_U2PF" Alignment="Left" TypographyId="Default">
+        <Translation Language="GB">ON</Translation>
+      </Text>
+      <Text Id="__SingleUse_7GVM" Alignment="Left" TypographyId="Default">
+        <Translation Language="GB">LED :</Translation>
+      </Text>
+      <Text Id="__SingleUse_EGLL" Alignment="Center" TypographyId="Large">
+        <Translation Language="GB">Led Control</Translation>
+      </Text>
+      <Text Id="__SingleUse_1QCH" Alignment="Center" TypographyId="Large">
+        <Translation Language="GB">Fan Control</Translation>
+      </Text>
+      <Text Id="__SingleUse_2VRO" Alignment="Center" TypographyId="Default">
+        <Translation Language="GB">FAN Control</Translation>
+      </Text>
+      <Text Id="__SingleUse_5ITQ" Alignment="Center" TypographyId="Default">
+        <Translation Language="GB">LED Control</Translation>
+      </Text>
+      <Text Id="__SingleUse_8UZ1" Alignment="Center" TypographyId="Large">
+        <Translation Language="GB">Device Control</Translation>
+      </Text>
+    </TextGroup>
+  </Texts>
+  <Typographies>
+    <Typography Id="Default" Font="verdana.ttf" Size="20" Bpp="4" IsVector="no" Direction="LTR" FallbackCharacter="?" WildcardCharacterRanges="0-9" />
+    <Typography Id="Large" Font="verdana.ttf" Size="30" Bpp="4" IsVector="no" Direction="LTR" FallbackCharacter="?" />
+    <Typography Id="Small" Font="verdana.ttf" Size="10" Bpp="4" IsVector="no" Direction="LTR" FallbackCharacter="?" />
+    <Typography Id="Typography_00" Font="timesbd.ttf" Size="30" Bpp="4" IsVector="no" Direction="LTR" FallbackCharacter="?" />
+    <Typography Id="Typography_01" Font="verdana.ttf" Size="40" Bpp="4" IsVector="no" Direction="LTR" FallbackCharacter="?" WildcardCharacterRanges="0-9" />
+  </Typographies>
+</TextDatabase>
