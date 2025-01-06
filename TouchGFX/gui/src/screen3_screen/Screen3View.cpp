@@ -7,9 +7,9 @@ extern osMessageQueueId_t myQueue03Handle;
 //extern int lux;
 int lux = 50;
 bool toggle = true;
-int currentHour = 20;
-int currentMinute = 8;
-int currentSecond = 6;
+int currentHour = 7;
+int currentMinute = 30;
+int currentSecond = 0;
 uint32_t initial_seconds = currentHour * 3600 + currentMinute * 60;
 
 

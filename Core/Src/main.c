@@ -620,6 +620,18 @@ static void MX_GPIO_Init(void) {
 	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
 	HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
+	GPIO_InitStruct.Pin = GPIO_PIN_3;
+	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+	GPIO_InitStruct.Pull = GPIO_NOPULL;
+	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+	HAL_GPIO_Init(GPIOG, &GPIO_InitStruct);
+
+	GPIO_InitStruct.Pin = GPIO_PIN_2;
+	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+	GPIO_InitStruct.Pull = GPIO_NOPULL;
+	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+	HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
 	/*Configure GPIO pins : PD12 PD13 */
 	GPIO_InitStruct.Pin = GPIO_PIN_12 | GPIO_PIN_13;
 	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
@@ -634,11 +646,6 @@ static void MX_GPIO_Init(void) {
 	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
 	HAL_GPIO_Init(GPIOG, &GPIO_InitStruct);
 
-	GPIO_InitStruct.Pin = GPIO_PIN_13 | GPIO_PIN_14;
-	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-	GPIO_InitStruct.Pull = GPIO_NOPULL;
-	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
-	HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
 	/* USER CODE END MX_GPIO_Init_2 */
 }
 
@@ -1168,21 +1175,21 @@ BH1750_STATUS BH1750_ReadLight(float *Result) {
 #define ON 1
 #define OFF 0
 void LedControl(int value) {
-	if(value == ON) {
+	if (value == ON) {
+		HAL_GPIO_WritePin(GPIOG, GPIO_PIN_3, GPIO_PIN_SET);
 		HAL_GPIO_WritePin(GPIOG, GPIO_PIN_13, GPIO_PIN_SET);
-		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_13, GPIO_PIN_SET);
-	}else {
+	} else {
+		HAL_GPIO_WritePin(GPIOG, GPIO_PIN_3, GPIO_PIN_RESET);
 		HAL_GPIO_WritePin(GPIOG, GPIO_PIN_13, GPIO_PIN_RESET);
-		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_13, GPIO_PIN_RESET);
 	}
 }
 void FanControl(int value) {
-	if(value == ON) {
+	if (value == ON) {
+		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_2, GPIO_PIN_SET);
 		HAL_GPIO_WritePin(GPIOG, GPIO_PIN_14, GPIO_PIN_SET);
-		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14, GPIO_PIN_SET);
-	}else {
+	} else {
+		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_2, GPIO_PIN_RESET);
 		HAL_GPIO_WritePin(GPIOG, GPIO_PIN_14, GPIO_PIN_RESET);
-		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14, GPIO_PIN_RESET);
 	}
 }
 void StartDefaultTask(void *argument) {
@@ -1192,19 +1199,23 @@ void StartDefaultTask(void *argument) {
 	BH1750_SetMode(CONTINUOUS_HIGH_RES_MODE_2);
 	/* Infinite loop */
 	for (;;) {
-		uint8_t temperature = (uint8_t)ds18b20_read();
+		uint8_t temperature = (uint8_t) ds18b20_read();
 		osMessageQueuePut(myQueue01Handle, &temperature, 0, 10);
 		if (BH1750_OK == BH1750_ReadLight(&BH1750_lux)) {
 			uint8_t lux_value = (uint8_t) BH1750_lux;
 			osMessageQueuePut(myQueue02Handle, &lux_value, 0, 10);
 		}
 		uint8_t res;
-		if (osMessageQueueGetCount(myQueue03Handle) > 0){
+		if (osMessageQueueGetCount(myQueue03Handle) > 0) {
 			osMessageQueueGet(myQueue03Handle, &res, NULL, osWaitForever);
-			if (res == 'L') LedControl(ON);
-			if (res == 'l') LedControl(OFF);
-			if (res == 'F') FanControl(ON);
-			if (res == 'f') FanControl(OFF);
+			if (res == 'L')
+				LedControl(ON);
+			if (res == 'l')
+				LedControl(OFF);
+			if (res == 'F')
+				FanControl(ON);
+			if (res == 'f')
+				FanControl(OFF);
 		}
 		osDelay(1000);
 	}
