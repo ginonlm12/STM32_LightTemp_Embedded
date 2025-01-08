@@ -59,7 +59,7 @@ Screen3ViewBase::Screen3ViewBase() :
     flexButton1_2.setPosition(204, 282, 32, 32);
     add(flexButton1_2);
 
-    textArea1.setXY(40, 0);
+    textArea1.setXY(36, 7);
     textArea1.setColor(touchgfx::Color::getColorFromRGB(5, 47, 255));
     textArea1.setLinespacing(0);
     textArea1.setTypedText(touchgfx::TypedText(T___SINGLEUSE_EGLL));
@@ -115,7 +115,7 @@ Screen3ViewBase::Screen3ViewBase() :
     settingMode.setAction(buttonCallback);
     add(settingMode);
 
-    timeTxt.setXY(64, 45);
+    timeTxt.setXY(76, 49);
     timeTxt.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
     timeTxt.setLinespacing(0);
     Unicode::snprintf(timeTxtBuffer, TIMETXT_SIZE, "%s", touchgfx::TypedText(T___SINGLEUSE_WOKT).getText());

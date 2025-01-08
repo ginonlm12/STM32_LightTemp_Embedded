@@ -565,7 +565,8 @@
           {
             "Type": "TextArea",
             "Name": "textArea1",
-            "X": 40,
+            "X": 36,
+            "Y": 7,
             "Width": 174,
             "Height": 30,
             "TextId": "__SingleUse_EGLL",
@@ -721,8 +722,8 @@
           {
             "Type": "TextArea",
             "Name": "timeTxt",
-            "X": 64,
-            "Y": 45,
+            "X": 76,
+            "Y": 49,
             "Width": 96,
             "Height": 24,
             "TextId": "__SingleUse_LDT9",

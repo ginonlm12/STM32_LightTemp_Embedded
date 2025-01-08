@@ -21,8 +21,6 @@
 #include "main.h"
 #include "cmsis_os.h"
 #include "app_touchgfx.h"
-#include "BH1750.h"
-
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "Components/ili9341/ili9341.h"
@@ -75,6 +73,10 @@ SPI_HandleTypeDef hspi5;
 
 SDRAM_HandleTypeDef hsdram1;
 
+RTC_HandleTypeDef hrtc;
+
+UART_HandleTypeDef huart1;
+
 /* Definitions for defaultTask */
 osThreadId_t defaultTaskHandle;
 const osThreadAttr_t defaultTask_attributes = { .name = "defaultTask",
@@ -100,6 +102,8 @@ uint16_t lux_value;
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_CRC_Init(void);
+static void MX_USART1_UART_Init(void);
+static void MX_RTC_Init(void);
 static void MX_I2C3_Init(void);
 static void MX_SPI5_Init(void);
 static void MX_FMC_Init(void);
@@ -183,6 +187,57 @@ static void MX_TIM1_Init(void) {
 	/* USER CODE END TIM6_Init 2 */
 
 }
+int init_temp;
+int init_lux;
+int init_toggle;
+#define FLASH_SECTOR_ADDRESS  0x080E0000
+typedef struct {
+	int temp;
+	int lux;
+	int toggle;
+} SensorData;
+
+SensorData sensorData;
+void saveData() {
+	sensorData.temp = init_temp;
+	sensorData.lux = init_lux;
+	sensorData.toggle = init_toggle;
+}
+void updateData() {
+	init_temp = sensorData.temp;
+	init_lux = sensorData.lux;
+	init_toggle = sensorData.toggle;
+}
+void saveStructToFlash() {
+	saveData();
+	HAL_FLASH_Unlock();
+
+	FLASH_Erase_Sector(FLASH_SECTOR_11, VOLTAGE_RANGE_3);
+
+	uint32_t *pData = (uint32_t*) &sensorData;
+	for (int i = 0; i < sizeof(SensorData) / 4; i++) {
+		HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD,
+		FLASH_SECTOR_ADDRESS + (i * 4), *(pData + i));
+	}
+
+	HAL_FLASH_Lock();
+}
+
+void loadStructFromFlash() {
+	SensorData *pFlashData = (SensorData*) FLASH_SECTOR_ADDRESS;
+
+	if (pFlashData->temp > 0 && pFlashData->temp <= 50 && pFlashData->lux > 0
+			&& pFlashData->lux <= 1000
+			&& (pFlashData->toggle == 0 || pFlashData->toggle == 1)) {
+		sensorData = *pFlashData;
+		updateData();
+	} else {
+		sensorData.temp = 25;
+		sensorData.lux = 50;
+		sensorData.toggle = 1;
+		updateData();
+	}
+}
 int main(void) {
 
 	/* USER CODE BEGIN 1 */
@@ -202,11 +257,13 @@ int main(void) {
 	SystemClock_Config();
 
 	/* USER CODE BEGIN SysInit */
-
+	loadStructFromFlash();
 	/* USER CODE END SysInit */
 
 	/* Initialize all configured peripherals */
 	MX_GPIO_Init();
+	MX_USART1_UART_Init();
+	MX_RTC_Init();
 	MX_CRC_Init();
 	MX_I2C3_Init();
 	MX_SPI5_Init();
@@ -222,7 +279,6 @@ int main(void) {
 
 	/* Init scheduler */
 	osKernelInitialize();
-
 	/* USER CODE BEGIN RTOS_MUTEX */
 	/* add mutexes, ... */
 	/* USER CODE END RTOS_MUTEX */
@@ -269,6 +325,16 @@ int main(void) {
 	/* USER CODE BEGIN WHILE */
 	while (1) {
 		/* USER CODE END WHILE */
+//		RTC_TimeTypeDef sTime = { 0 };
+//		RTC_DateTypeDef sDate = { 0 };
+//
+//		HAL_RTC_GetTime(&hrtc, &sTime, RTC_FORMAT_BIN);
+//		HAL_RTC_GetDate(&hrtc, &sDate, RTC_FORMAT_BIN);
+//		char buf[100];
+//		sprintf(buf, "%02d/%02d/20%02d %02d:%02d:%02d\n", sDate.Date,
+//				sDate.Month, sDate.Year, sTime.Hours, sTime.Minutes,
+//				sTime.Seconds);
+//		HAL_UART_Transmit(&huart1, (const uint8_t*) buf, strlen(buf), 1000);
 		/* USER CODE BEGIN 3 */
 	}
 	/* USER CODE END 3 */
@@ -290,12 +356,15 @@ void SystemClock_Config(void) {
 	/** Initializes the RCC Oscillators according to the specified parameters
 	 * in the RCC_OscInitTypeDef structure.
 	 */
-	RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
-	RCC_OscInitStruct.HSEState = RCC_HSE_ON;
+	RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI
+			| RCC_OSCILLATORTYPE_LSI;
+	RCC_OscInitStruct.HSIState = RCC_HSI_ON;
+	RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
+	RCC_OscInitStruct.LSIState = RCC_LSI_ON;
 	RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-	RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
+	RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
 	RCC_OscInitStruct.PLL.PLLM = 8;
-	RCC_OscInitStruct.PLL.PLLN = 360;
+	RCC_OscInitStruct.PLL.PLLN = 180;
 	RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
 	RCC_OscInitStruct.PLL.PLLQ = 4;
 	if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK) {
@@ -320,6 +389,96 @@ void SystemClock_Config(void) {
 	if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_5) != HAL_OK) {
 		Error_Handler();
 	}
+}
+
+/**
+ * @brief RTC Initialization Function
+ * @param None
+ * @retval None
+ */
+static void MX_RTC_Init(void) {
+
+	/* USER CODE BEGIN RTC_Init 0 */
+
+	/* USER CODE END RTC_Init 0 */
+
+	RTC_TimeTypeDef sTime = { 0 };
+	RTC_DateTypeDef sDate = { 0 };
+
+	/* USER CODE BEGIN RTC_Init 1 */
+
+	/* USER CODE END RTC_Init 1 */
+
+	/** Initialize RTC Only
+	 */
+	hrtc.Instance = RTC;
+	hrtc.Init.HourFormat = RTC_HOURFORMAT_24;
+	hrtc.Init.AsynchPrediv = 127;
+	hrtc.Init.SynchPrediv = 255;
+	hrtc.Init.OutPut = RTC_OUTPUT_DISABLE;
+	hrtc.Init.OutPutPolarity = RTC_OUTPUT_POLARITY_HIGH;
+	hrtc.Init.OutPutType = RTC_OUTPUT_TYPE_OPENDRAIN;
+	if (HAL_RTC_Init(&hrtc) != HAL_OK) {
+		Error_Handler();
+	}
+
+	/* USER CODE BEGIN Check_RTC_BKUP */
+
+	/* USER CODE END Check_RTC_BKUP */
+
+	/** Initialize RTC and set the Time and Date
+	 */
+	sTime.Hours = 7;
+	sTime.Minutes = 15;
+	sTime.Seconds = 26;
+	sTime.DayLightSaving = RTC_DAYLIGHTSAVING_NONE;
+	sTime.StoreOperation = RTC_STOREOPERATION_RESET;
+	if (HAL_RTC_SetTime(&hrtc, &sTime, RTC_FORMAT_BIN) != HAL_OK) {
+		Error_Handler();
+	}
+	sDate.WeekDay = RTC_WEEKDAY_TUESDAY;
+	sDate.Month = RTC_MONTH_JANUARY;
+	sDate.Date = 5;
+	sDate.Year = 25;
+
+	if (HAL_RTC_SetDate(&hrtc, &sDate, RTC_FORMAT_BIN) != HAL_OK) {
+		Error_Handler();
+	}
+	/* USER CODE BEGIN RTC_Init 2 */
+
+	/* USER CODE END RTC_Init 2 */
+
+}
+
+/**
+ * @brief USART1 Initialization Function
+ * @param None
+ * @retval None
+ */
+static void MX_USART1_UART_Init(void) {
+
+	/* USER CODE BEGIN USART1_Init 0 */
+
+	/* USER CODE END USART1_Init 0 */
+
+	/* USER CODE BEGIN USART1_Init 1 */
+
+	/* USER CODE END USART1_Init 1 */
+	huart1.Instance = USART1;
+	huart1.Init.BaudRate = 115200;
+	huart1.Init.WordLength = UART_WORDLENGTH_8B;
+	huart1.Init.StopBits = UART_STOPBITS_1;
+	huart1.Init.Parity = UART_PARITY_NONE;
+	huart1.Init.Mode = UART_MODE_TX_RX;
+	huart1.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+	huart1.Init.OverSampling = UART_OVERSAMPLING_16;
+	if (HAL_UART_Init(&huart1) != HAL_OK) {
+		Error_Handler();
+	}
+	/* USER CODE BEGIN USART1_Init 2 */
+
+	/* USER CODE END USART1_Init 2 */
+
 }
 
 /**
@@ -962,11 +1121,13 @@ void LCD_Delay(uint32_t Delay) {
  */
 /* USER CODE END Header_StartDefaultTask */
 
+// Khởi tạo timer chạy tick để có thể cho hệ thống dừng đến us
 void Delay_us(uint16_t us) {
 	__HAL_TIM_SET_COUNTER(&htim1, 0);
 	while (__HAL_TIM_GET_COUNTER(&htim1) < us)
 		;
 }
+// Khởi tạo chân đọc đữ liệu từ DS18B20 ở đây là chân PG2
 void GPIO_SetState(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin, uint32_t Mode) {
 	GPIO_InitTypeDef GPIO_InitStruct = { 0 };
 //    HAL_GPIO_DeInit(GPIOx, GPIO_Pin);
@@ -977,6 +1138,7 @@ void GPIO_SetState(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin, uint32_t Mode) {
 	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
 	HAL_GPIO_Init(GPIOx, &GPIO_InitStruct);
 }
+// Gửi tín hiệu đến DS18B20 để biết bắt đầu đọc tín hiệu nhiệt độ
 void OneWire_Reset(void) {
 	GPIO_SetState(TEMP_GPIO, TEMP_PIN, GPIO_MODE_OUTPUT_OD);
 	HAL_GPIO_WritePin(TEMP_GPIO, TEMP_PIN, GPIO_PIN_RESET);
@@ -985,6 +1147,7 @@ void OneWire_Reset(void) {
 	GPIO_SetState(TEMP_GPIO, TEMP_PIN, GPIO_MODE_INPUT);
 	Delay_us(500);
 }
+// Ghi dữ liệu vào DS18B20 để đo nhiệt độ ở 0x44 hoặc đọc ở 0xBE
 void OneWire_Write(uint8_t data) {
 	uint8_t count;
 	for (count = 0; count < 8; ++count) {
@@ -1004,6 +1167,7 @@ void OneWire_Write(uint8_t data) {
 		Delay_us(2);
 	}
 }
+// đọc giá trị từ DS18B20 trả về dãy 8 bit
 uint8_t OneWire_Read(void) {
 	uint8_t count, data = 0;
 
@@ -1024,6 +1188,7 @@ uint8_t OneWire_Read(void) {
 
 	return data;
 }
+// Chuyển giá trị từ dãy 8 bit sáng giá trị float
 float ds18b20_read(void) {
 	uint8_t busy = 0, temp1, temp2;
 	uint16_t temp3, TimeOut;
@@ -1073,6 +1238,7 @@ typedef enum {
 I2C_HandleTypeDef *bh1750_i2c;	// Handler to I2C interface
 bh1750_mode Bh1750_Mode;	// Current sensor mode
 uint8_t Bh1750_Mtreg;	// Current MT register value
+// gửi tín hiệu để khởi động lại BH1750
 BH1750_STATUS BH1750_Reset(void) {
 	uint8_t tmp = 0x07;
 	if (HAL_OK
@@ -1081,6 +1247,7 @@ BH1750_STATUS BH1750_Reset(void) {
 
 	return BH1750_ERROR;
 }
+// Điêu chỉnh độ nhạy khi do ánh sáng, thời gian đo càng dài thì độ nhạy càng cao
 BH1750_STATUS BH1750_SetMtreg(uint8_t Mtreg) {
 	HAL_StatusTypeDef retCode;
 	if (Mtreg < 31 || Mtreg > 254) {
@@ -1108,6 +1275,7 @@ BH1750_STATUS BH1750_SetMtreg(uint8_t Mtreg) {
 
 	return BH1750_ERROR;
 }
+// Khởi tạo cảm biến BH1750 và lưu lại địa chỉ của con trở I2C
 BH1750_STATUS BH1750_Init(I2C_HandleTypeDef *hi2c) {
 	bh1750_i2c = hi2c;
 	if (BH1750_OK == BH1750_Reset()) {
@@ -1116,7 +1284,7 @@ BH1750_STATUS BH1750_Init(I2C_HandleTypeDef *hi2c) {
 	}
 	return BH1750_ERROR;
 }
-
+// Thay đổi trạng thái nguồn của BH1750 đẻ tiết kiệm năng lượng
 BH1750_STATUS BH1750_PowerState(uint8_t PowerOn) {
 	PowerOn = (PowerOn ? 1 : 0);
 	if (HAL_OK
@@ -1127,6 +1295,7 @@ BH1750_STATUS BH1750_PowerState(uint8_t PowerOn) {
 	return BH1750_ERROR;
 }
 
+// Thiết lập chế độ làm việc của BH1750 chế độ liên tục hoặc 1 lần, phân giải cao hoặc thấp
 BH1750_STATUS BH1750_SetMode(bh1750_mode Mode) {
 	if (!((Mode >> 4) || (Mode >> 5)))
 		return BH1750_ERROR;
@@ -1142,13 +1311,14 @@ BH1750_STATUS BH1750_SetMode(bh1750_mode Mode) {
 	return BH1750_ERROR;
 }
 
+// Khởi động lại phép đo nếu phép đo đang ở chế độ đo thủ công
 BH1750_STATUS BH1750_TriggerManualConversion(void) {
 	if (BH1750_OK == BH1750_SetMode(Bh1750_Mode)) {
 		return BH1750_OK;
 	}
 	return BH1750_ERROR;
 }
-
+//Đọc giá trị ánh sáng từ cảm biến và chuyển dữ liệu sang float và trả về
 BH1750_STATUS BH1750_ReadLight(float *Result) {
 	float result;
 	uint8_t tmp[2];
@@ -1176,35 +1346,42 @@ BH1750_STATUS BH1750_ReadLight(float *Result) {
 #define OFF 0
 void LedControl(int value) {
 	if (value == ON) {
-		HAL_GPIO_WritePin(GPIOG, GPIO_PIN_3, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(GPIOG, GPIO_PIN_3, GPIO_PIN_SET); // Bật LED
 		HAL_GPIO_WritePin(GPIOG, GPIO_PIN_13, GPIO_PIN_SET);
 	} else {
-		HAL_GPIO_WritePin(GPIOG, GPIO_PIN_3, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(GPIOG, GPIO_PIN_3, GPIO_PIN_RESET); // Tắt LED
 		HAL_GPIO_WritePin(GPIOG, GPIO_PIN_13, GPIO_PIN_RESET);
 	}
 }
 void FanControl(int value) {
 	if (value == ON) {
-		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_2, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_2, GPIO_PIN_SET); // Bật quạt
 		HAL_GPIO_WritePin(GPIOG, GPIO_PIN_14, GPIO_PIN_SET);
 	} else {
-		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_2, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_2, GPIO_PIN_RESET); // Tắt quạt
 		HAL_GPIO_WritePin(GPIOG, GPIO_PIN_14, GPIO_PIN_RESET);
 	}
 }
 void StartDefaultTask(void *argument) {
 	/* USER CODE BEGIN 5 */
+	uint32_t lastSaveTime = osKernelGetTickCount();
 	float BH1750_lux;
+	// Khởi tạo cảm biến BH1750
 	BH1750_Init(&hi2c3);
 	BH1750_SetMode(CONTINUOUS_HIGH_RES_MODE_2);
 	/* Infinite loop */
 	for (;;) {
+		// Đọc giá trị cảm biến DS1820
 		uint8_t temperature = (uint8_t) ds18b20_read();
+		// Gửi giá trị nhiệt độ vào hàng đợi
 		osMessageQueuePut(myQueue01Handle, &temperature, 0, 10);
+		//Đọc giá trị cảm biến BH1750
 		if (BH1750_OK == BH1750_ReadLight(&BH1750_lux)) {
 			uint8_t lux_value = (uint8_t) BH1750_lux;
+			// gửi giá trị ánh sáng vào hàng đợi
 			osMessageQueuePut(myQueue02Handle, &lux_value, 0, 10);
 		}
+		// nhận giá trị từ queue gửi từ màn hình điều khiển về
 		uint8_t res;
 		if (osMessageQueueGetCount(myQueue03Handle) > 0) {
 			osMessageQueueGet(myQueue03Handle, &res, NULL, osWaitForever);
@@ -1217,7 +1394,12 @@ void StartDefaultTask(void *argument) {
 			if (res == 'f')
 				FanControl(OFF);
 		}
-		osDelay(1000);
+		uint32_t currentTime = osKernelGetTickCount();
+		if ((currentTime - lastSaveTime) >= 30000) {
+			saveStructToFlash();
+			lastSaveTime = currentTime;
+		}
+		osDelay(300);
 	}
 	/* USER CODE END 5 */
 }
