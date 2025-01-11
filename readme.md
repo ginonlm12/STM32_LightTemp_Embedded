@@ -42,7 +42,7 @@ This project implements a simple embedded system using STM32 microcontrollers to
 
 ## License and Credits
 
-This project is licensed under the MIT License. See the `LICENSE` file for more details.
+This project is open-source and free to use for educational and personal purposes. Attribution to the original contributors is appreciated if reused or modified.
 
 ### Contributors
 
