@@ -6,6 +6,9 @@
   <Texts>
     <TextGroup Id="Group1" />
     <TextGroup Id="Unsorted">
+      <Text Id="" Alignment="Left" TypographyId="Default">
+        <Translation Language="GB">Turn lights:</Translation>
+      </Text>
       <Text Id="__SingleUse_WOKT" Alignment="Left" TypographyId="Default">
         <Translation Language="GB">18:02:02</Translation>
       </Text>

@@ -37,27 +37,27 @@
 		<link>
 			<name>Application/User/freertos.c</name>
 			<type>1</type>
-			<location>C:/TouchGFXProjects/Final_Project/Core/Src/freertos.c</location>
+			<location>C:/Users/user/STM32CubeIDE/workspace_1.16.0/STM32_LightTemp_Embedded/Core/Src/freertos.c</location>
 		</link>
 		<link>
 			<name>Application/User/main.c</name>
 			<type>1</type>
-			<location>C:/TouchGFXProjects/Final_Project/Core/Src/main.c</location>
+			<location>C:/Users/user/STM32CubeIDE/workspace_1.16.0/STM32_LightTemp_Embedded/Core/Src/main.c</location>
 		</link>
 		<link>
 			<name>Application/User/stm32f4xx_hal_msp.c</name>
 			<type>1</type>
-			<location>C:/TouchGFXProjects/Final_Project/Core/Src/stm32f4xx_hal_msp.c</location>
+			<location>C:/Users/user/STM32CubeIDE/workspace_1.16.0/STM32_LightTemp_Embedded/Core/Src/stm32f4xx_hal_msp.c</location>
 		</link>
 		<link>
 			<name>Application/User/stm32f4xx_hal_timebase_tim.c</name>
 			<type>1</type>
-			<location>C:/TouchGFXProjects/Final_Project/Core/Src/stm32f4xx_hal_timebase_tim.c</location>
+			<location>C:/Users/user/STM32CubeIDE/workspace_1.16.0/STM32_LightTemp_Embedded/Core/Src/stm32f4xx_hal_timebase_tim.c</location>
 		</link>
 		<link>
 			<name>Application/User/stm32f4xx_it.c</name>
 			<type>1</type>
-			<location>C:/TouchGFXProjects/Final_Project/Core/Src/stm32f4xx_it.c</location>
+			<location>C:/Users/user/STM32CubeIDE/workspace_1.16.0/STM32_LightTemp_Embedded/Core/Src/stm32f4xx_it.c</location>
 		</link>
 		<link>
 			<name>Drivers/CMSIS/system_stm32f4xx.c</name>
@@ -252,42 +252,42 @@
 		<link>
 			<name>Application/User/TouchGFX/App/app_touchgfx.c</name>
 			<type>1</type>
-			<location>C:/TouchGFXProjects/Final_Project/TouchGFX/App/app_touchgfx.c</location>
+			<location>C:/Users/user/STM32CubeIDE/workspace_1.16.0/STM32_LightTemp_Embedded/TouchGFX/App/app_touchgfx.c</location>
 		</link>
 		<link>
 			<name>Application/User/TouchGFX/target/STM32TouchController.cpp</name>
 			<type>1</type>
-			<location>C:/TouchGFXProjects/Final_Project/TouchGFX/target/STM32TouchController.cpp</location>
+			<location>C:/Users/user/STM32CubeIDE/workspace_1.16.0/STM32_LightTemp_Embedded/TouchGFX/target/STM32TouchController.cpp</location>
 		</link>
 		<link>
 			<name>Application/User/TouchGFX/target/TouchGFXGPIO.cpp</name>
 			<type>1</type>
-			<location>C:/TouchGFXProjects/Final_Project/TouchGFX/target/TouchGFXGPIO.cpp</location>
+			<location>C:/Users/user/STM32CubeIDE/workspace_1.16.0/STM32_LightTemp_Embedded/TouchGFX/target/TouchGFXGPIO.cpp</location>
 		</link>
 		<link>
 			<name>Application/User/TouchGFX/target/TouchGFXHAL.cpp</name>
 			<type>1</type>
-			<location>C:/TouchGFXProjects/Final_Project/TouchGFX/target/TouchGFXHAL.cpp</location>
+			<location>C:/Users/user/STM32CubeIDE/workspace_1.16.0/STM32_LightTemp_Embedded/TouchGFX/target/TouchGFXHAL.cpp</location>
 		</link>
 		<link>
 			<name>Application/User/TouchGFX/target/generated/OSWrappers.cpp</name>
 			<type>1</type>
-			<location>C:/TouchGFXProjects/Final_Project/TouchGFX/target/generated/OSWrappers.cpp</location>
+			<location>C:/Users/user/STM32CubeIDE/workspace_1.16.0/STM32_LightTemp_Embedded/TouchGFX/target/generated/OSWrappers.cpp</location>
 		</link>
 		<link>
 			<name>Application/User/TouchGFX/target/generated/STM32DMA.cpp</name>
 			<type>1</type>
-			<location>C:/TouchGFXProjects/Final_Project/TouchGFX/target/generated/STM32DMA.cpp</location>
+			<location>C:/Users/user/STM32CubeIDE/workspace_1.16.0/STM32_LightTemp_Embedded/TouchGFX/target/generated/STM32DMA.cpp</location>
 		</link>
 		<link>
 			<name>Application/User/TouchGFX/target/generated/TouchGFXConfiguration.cpp</name>
 			<type>1</type>
-			<location>C:/TouchGFXProjects/Final_Project/TouchGFX/target/generated/TouchGFXConfiguration.cpp</location>
+			<location>C:/Users/user/STM32CubeIDE/workspace_1.16.0/STM32_LightTemp_Embedded/TouchGFX/target/generated/TouchGFXConfiguration.cpp</location>
 		</link>
 		<link>
 			<name>Application/User/TouchGFX/target/generated/TouchGFXGeneratedHAL.cpp</name>
 			<type>1</type>
-			<location>C:/TouchGFXProjects/Final_Project/TouchGFX/target/generated/TouchGFXGeneratedHAL.cpp</location>
+			<location>C:/Users/user/STM32CubeIDE/workspace_1.16.0/STM32_LightTemp_Embedded/TouchGFX/target/generated/TouchGFXGeneratedHAL.cpp</location>
 		</link>
 		<link>
 			<name>Application/User/gui/FrontendApplication.cpp</name>

@@ -23,15 +23,15 @@ public:
     /*
      * Virtual Action Handlers
      */
+    virtual void showSetting()
+    {
+        // Override and implement this function in Screen3
+    }
     virtual void increaseLux()
     {
         // Override and implement this function in Screen3
     }
     virtual void decreaseLux()
-    {
-        // Override and implement this function in Screen3
-    }
-    virtual void showSetting()
     {
         // Override and implement this function in Screen3
     }
@@ -60,6 +60,7 @@ protected:
     touchgfx::TextAreaWithOneWildcard luxTxt;
     touchgfx::ToggleButton settingMode;
     touchgfx::TextAreaWithOneWildcard timeTxt;
+    touchgfx::ToggleButton onOffBtn;
 
     /*
      * Wildcard Buffers
@@ -78,14 +79,14 @@ private:
     /*
      * Callback Declarations
      */
-    touchgfx::Callback<Screen3ViewBase, const touchgfx::AbstractButtonContainer&> flexButtonCallback;
     touchgfx::Callback<Screen3ViewBase, const touchgfx::AbstractButton&> buttonCallback;
+    touchgfx::Callback<Screen3ViewBase, const touchgfx::AbstractButtonContainer&> flexButtonCallback;
 
     /*
      * Callback Handler Declarations
      */
-    void flexButtonCallbackHandler(const touchgfx::AbstractButtonContainer& src);
     void buttonCallbackHandler(const touchgfx::AbstractButton& src);
+    void flexButtonCallbackHandler(const touchgfx::AbstractButtonContainer& src);
 
 };
 

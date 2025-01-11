@@ -1,0 +1,16 @@
+../../Middlewares/ST/touchgfx/framework/include/touchgfx/Screen.hpp:104:18:virtual void touchgfx::Screen::afterTransition()	0	static
+../../Middlewares/ST/touchgfx/framework/include/touchgfx/Screen.hpp:154:18:virtual void touchgfx::Screen::handleKeyEvent(uint8_t)	0	static
+C:/Users/user/STM32CubeIDE/workspace_1.16.0/STM32_LightTemp_Embedded/TouchGFX/gui/src/screen3_screen/Screen3View.cpp:32:6:virtual void Screen3View::tearDownScreen()	0	static
+../../TouchGFX/gui/include/gui/screen3_screen/Screen3View.hpp:11:13:Screen3View::~Screen3View()	8	static
+../../TouchGFX/gui/include/gui/screen3_screen/Screen3View.hpp:11:13:virtual Screen3View::~Screen3View()	8	static
+../../Middlewares/ST/touchgfx/framework/include/touchgfx/Bitmap.hpp:146:14:touchgfx::BitmapId touchgfx::Bitmap::getId() const	8	static
+C:/Users/user/STM32CubeIDE/workspace_1.16.0/STM32_LightTemp_Embedded/TouchGFX/gui/src/screen3_screen/Screen3View.cpp:19:1:Screen3View::Screen3View()	8	static
+C:/Users/user/STM32CubeIDE/workspace_1.16.0/STM32_LightTemp_Embedded/TouchGFX/gui/src/screen3_screen/Screen3View.cpp:165:1:cpp)	0	static
+C:/Users/user/STM32CubeIDE/workspace_1.16.0/STM32_LightTemp_Embedded/TouchGFX/gui/src/screen3_screen/Screen3View.cpp:37:6:void Screen3View::updateLux()	8	static
+C:/Users/user/STM32CubeIDE/workspace_1.16.0/STM32_LightTemp_Embedded/TouchGFX/gui/src/screen3_screen/Screen3View.cpp:43:6:virtual void Screen3View::increaseLux()	0	static
+C:/Users/user/STM32CubeIDE/workspace_1.16.0/STM32_LightTemp_Embedded/TouchGFX/gui/src/screen3_screen/Screen3View.cpp:49:6:virtual void Screen3View::decreaseLux()	0	static
+C:/Users/user/STM32CubeIDE/workspace_1.16.0/STM32_LightTemp_Embedded/TouchGFX/gui/src/screen3_screen/Screen3View.cpp:61:6:void Screen3View::updateTime()	16	static
+C:/Users/user/STM32CubeIDE/workspace_1.16.0/STM32_LightTemp_Embedded/TouchGFX/gui/src/screen3_screen/Screen3View.cpp:68:6:void Screen3View::updateView(bool)	8	static
+C:/Users/user/STM32CubeIDE/workspace_1.16.0/STM32_LightTemp_Embedded/TouchGFX/gui/src/screen3_screen/Screen3View.cpp:55:6:virtual void Screen3View::showSetting()	8	static
+C:/Users/user/STM32CubeIDE/workspace_1.16.0/STM32_LightTemp_Embedded/TouchGFX/gui/src/screen3_screen/Screen3View.cpp:23:6:virtual void Screen3View::setupScreen()	16	static
+C:/Users/user/STM32CubeIDE/workspace_1.16.0/STM32_LightTemp_Embedded/TouchGFX/gui/src/screen3_screen/Screen3View.cpp:78:6:virtual void Screen3View::handleTickEvent()	56	static

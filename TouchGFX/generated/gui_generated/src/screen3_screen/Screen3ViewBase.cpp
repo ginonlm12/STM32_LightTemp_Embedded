@@ -7,8 +7,8 @@
 #include <images/BitmapDatabase.hpp>
 
 Screen3ViewBase::Screen3ViewBase() :
-    flexButtonCallback(this, &Screen3ViewBase::flexButtonCallbackHandler),
-    buttonCallback(this, &Screen3ViewBase::buttonCallbackHandler)
+    buttonCallback(this, &Screen3ViewBase::buttonCallbackHandler),
+    flexButtonCallback(this, &Screen3ViewBase::flexButtonCallbackHandler)
 {
     __background.setPosition(0, 0, 240, 320);
     __background.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
@@ -110,7 +110,7 @@ Screen3ViewBase::Screen3ViewBase() :
     luxTxt.setTypedText(touchgfx::TypedText(T___SINGLEUSE_MVXD));
     add(luxTxt);
 
-    settingMode.setXY(129, 164);
+    settingMode.setXY(140, 164);
     settingMode.setBitmaps(touchgfx::Bitmap(BITMAP_ALTERNATE_THEME_IMAGES_WIDGETS_TOGGLEBUTTON_MEDIUM_ROUND_SMALL_ON_ACTIVE_ID), touchgfx::Bitmap(BITMAP_ALTERNATE_THEME_IMAGES_WIDGETS_TOGGLEBUTTON_MEDIUM_ROUND_SMALL_OFF_LIGHT_ID));
     settingMode.setAction(buttonCallback);
     add(settingMode);
@@ -123,6 +123,11 @@ Screen3ViewBase::Screen3ViewBase() :
     timeTxt.resizeToCurrentText();
     timeTxt.setTypedText(touchgfx::TypedText(T___SINGLEUSE_LDT9));
     add(timeTxt);
+
+    onOffBtn.setXY(140, 226);
+    onOffBtn.setBitmaps(touchgfx::Bitmap(BITMAP_ALTERNATE_THEME_IMAGES_WIDGETS_TOGGLEBUTTON_MEDIUM_ROUND_SMALL_ON_ACTIVE_ID), touchgfx::Bitmap(BITMAP_ALTERNATE_THEME_IMAGES_WIDGETS_TOGGLEBUTTON_MEDIUM_ROUND_SMALL_OFF_LIGHT_ID));
+    onOffBtn.setVisible(false);
+    add(onOffBtn);
 }
 
 Screen3ViewBase::~Screen3ViewBase()
@@ -135,15 +140,19 @@ void Screen3ViewBase::setupScreen()
 
 }
 
-void Screen3ViewBase::flexButtonCallbackHandler(const touchgfx::AbstractButtonContainer& src)
+void Screen3ViewBase::buttonCallbackHandler(const touchgfx::AbstractButton& src)
 {
-    if (&src == &flexButton1_2)
+    if (&src == &settingMode)
     {
         //Interaction1
-        //When flexButton1_2 clicked change screen to Screen1
-        //Go to Screen1 with screen transition towards East
-        application().gotoScreen1ScreenWipeTransitionEast();
+        //When settingMode clicked call virtual function
+        //Call showSetting
+        showSetting();
     }
+}
+
+void Screen3ViewBase::flexButtonCallbackHandler(const touchgfx::AbstractButtonContainer& src)
+{
     if (&src == &increaseBtn)
     {
         //Interaction2
@@ -158,15 +167,11 @@ void Screen3ViewBase::flexButtonCallbackHandler(const touchgfx::AbstractButtonCo
         //Call decreaseLux
         decreaseLux();
     }
-}
-
-void Screen3ViewBase::buttonCallbackHandler(const touchgfx::AbstractButton& src)
-{
-    if (&src == &settingMode)
+    if (&src == &flexButton1_2)
     {
         //Interaction4
-        //When settingMode clicked call virtual function
-        //Call showSetting
-        showSetting();
+        //When flexButton1_2 clicked change screen to Screen1
+        //Go to Screen1 with screen transition towards West
+        application().gotoScreen1ScreenWipeTransitionWest();
     }
 }

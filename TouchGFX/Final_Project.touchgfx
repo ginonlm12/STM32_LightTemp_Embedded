@@ -711,7 +711,7 @@
           {
             "Type": "ToggleButton",
             "Name": "settingMode",
-            "X": 129,
+            "X": 140,
             "Y": 164,
             "Width": 84,
             "Height": 50,
@@ -739,24 +739,36 @@
               "UseBuffer": true,
               "BufferSize": 10
             }
+          },
+          {
+            "Type": "ToggleButton",
+            "Name": "onOffBtn",
+            "X": 140,
+            "Y": 226,
+            "Width": 84,
+            "Height": 50,
+            "Visible": false,
+            "Pressed": "__generated\\alternate_theme_images_widgets_togglebutton_medium_round_small_off_light.png",
+            "Released": "__generated\\alternate_theme_images_widgets_togglebutton_medium_round_small_on_active.png",
+            "Preset": "alternate_theme\\presets\\togglebutton\\medium\\small_round_active.json"
           }
         ],
         "Interactions": [
           {
             "InteractionName": "Interaction1",
+            "HasCompletedTrigger": true,
             "Trigger": {
               "Type": "TriggerClicked",
-              "TriggerComponent": "flexButton1_2"
+              "TriggerComponent": "settingMode"
             },
             "Action": {
-              "Type": "ActionGotoScreen",
-              "ScreenTransitionType": "ScreenTransitionWipe",
-              "ScreenTransitionDirection": "East",
-              "ActionComponent": "Screen1"
+              "Type": "ActionCustom",
+              "FunctionName": "showSetting"
             }
           },
           {
             "InteractionName": "Interaction2",
+            "HasCompletedTrigger": true,
             "Trigger": {
               "Type": "TriggerClicked",
               "TriggerComponent": "increaseBtn"
@@ -768,6 +780,7 @@
           },
           {
             "InteractionName": "Interaction3",
+            "HasCompletedTrigger": true,
             "Trigger": {
               "Type": "TriggerClicked",
               "TriggerComponent": "decreaseBtn"
@@ -779,13 +792,16 @@
           },
           {
             "InteractionName": "Interaction4",
+            "HasCompletedTrigger": true,
             "Trigger": {
               "Type": "TriggerClicked",
-              "TriggerComponent": "settingMode"
+              "TriggerComponent": "flexButton1_2"
             },
             "Action": {
-              "Type": "ActionCustom",
-              "FunctionName": "showSetting"
+              "Type": "ActionGotoScreen",
+              "ScreenTransitionType": "ScreenTransitionWipe",
+              "ScreenTransitionDirection": "West",
+              "ActionComponent": "Screen1"
             }
           }
         ]

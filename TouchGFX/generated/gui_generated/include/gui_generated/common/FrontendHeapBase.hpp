@@ -76,7 +76,8 @@ public:
     typedef touchgfx::meta::TypeList< touchgfx::NoTransition,
             touchgfx::meta::TypeList< CoverTransition<EAST>,
             touchgfx::meta::TypeList< WipeTransition<EAST>,
-            touchgfx::meta::Nil > >
+            touchgfx::meta::TypeList< WipeTransition<WEST>,
+            touchgfx::meta::Nil > > >
             > GeneratedTransitionTypes;
 
     /**
