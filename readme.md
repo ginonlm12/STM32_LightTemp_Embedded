@@ -42,7 +42,7 @@ This project implements a simple embedded system using STM32 microcontrollers to
 
 ## License and Credits
 
-This project is open-source and free to use for educational and personal purposes. Attribution to the original contributors is appreciated if reused or modified.
+This project is conducted under project of IT4210 - Embedded System - Semester 2024.1 - HUST. It is open-source and free to use for educational and personal purposes. Attribution to the original contributors is appreciated if reused or modified.
 
 ### Contributors
 
@@ -50,3 +50,7 @@ This project is open-source and free to use for educational and personal purpose
 - [Thanh Lap Pham](https://github.com/EnmutsubiKami)
 
 Feel free to fork this repository and contribute to the project by submitting pull requests!
+
+## Other sources
+Report: https://www.overleaf.com/read/pgnjhtmjjnxh#bda9e3
+Demo: https://studio.youtube.com/video/2_OYT96jqZw
