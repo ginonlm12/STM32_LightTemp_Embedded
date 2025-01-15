@@ -52,5 +52,5 @@ This project is conducted under project of IT4210 - Embedded System - Semester 2
 Feel free to fork this repository and contribute to the project by submitting pull requests!
 
 ## Other sources
-Report: https://www.overleaf.com/read/pgnjhtmjjnxh#bda9e3
-Demo: https://studio.youtube.com/video/2_OYT96jqZw
+- [Technical Report](https://www.overleaf.com/read/pgnjhtmjjnxh#bda9e3)
+- [Video Demo](https://youtube.com/video/2_OYT96jqZw)
